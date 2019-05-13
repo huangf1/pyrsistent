@@ -117,6 +117,7 @@ else:
         )
 
 def _update_structure(structure, kvs, path, command):
+    from pyrsistent._pmap import pmap
     e = structure.evolver()
     if not path and command is discard:
         # Do this in reverse to avoid index problems with vectors. See #92.
@@ -125,7 +126,7 @@ def _update_structure(structure, kvs, path, command):
     else:
         for k, v in kvs:
             result = _do_to_path(v, path, command)
-            if result is not v:
+            if command is pmap() or result is not v:
                 e[k] = result
 
     return e.persistent()
